@@ -1,0 +1,40 @@
+
+
+R05_UserEchoDataServlet      修改用户时，回显用户信息
+R06_UserUpdateServlet        获取前端修改后的信息，调用dao层修改用户信息的语句
+R07_SelectUserDelServlet     批量删除用户
+R08_                         分页查询
+      后台传至前端的数据:
+        int totalCount   -->   总记录条数
+        int totalPage    -->   总页码数 = totalCount % 每页显示的数目 == 0 ? totalCount / 每页显示的数目 : totalCount / 每页显示的数目 +1
+        List list        -->   每页的数据   list集合
+
+      前台传至后台的数据:
+        int currentPage  -->   当前页码
+        int rows         -->   每页显示的数据条数
+
+      将5条信息其封装成一个类，取名为pageBean
+
+
+
+      totalCount = select count(*) from users;
+      totalPage = 提供每页显示的数据条数； rows
+      list  = select * from user limit ? , ?   -->  第一个? 开始查询的索引，   第二个 ? rows每页显示的条数
+      currentPage = 提供当前页码给服务器
+      开始查询的索引 = ( currentPage - 1 ）* rows
+
+
+
+      步骤: 接收请求参数currentPage,rows
+      //创建空的pageBean 对象
+      //设置currentPage   属性和rows属性
+      //调用dao完成查询 totalCount 总记录数  dao.findTotalCount()
+      // start索引: (currentPage-1)*rows
+      //调用dao去查询list集合  dao.findByPage(int start, int rows)
+      //计算总页码: 返回pageBean对象
+
+      userDao层
+      // 查询总记录数
+      int findTotalCount(){}
+      //分页查询list
+      List findByPage(int start,int rows)
